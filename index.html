@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ribosomes Diagnostics | Complete Medical Equipment Solutions</title>
+    <meta name="description" content="Leading distributor of diagnostic equipment in India - Hematology, Biochemistry, CLIA, ELISA systems with AI support">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        
+        .page-section { display: none; min-height: 100vh; padding-top: 80px; }
+        .page-section.active { display: block; }
+        
+        .product-card { transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        
+        .ai-chatbot { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .chatbot-button { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #0066CC, #00A86B); color: white; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(0,102,204,0.5); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; font-size: 28px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 8px 24px rgba(0,102,204,0.5); } 50% { box-shadow: 0 8px 32px rgba(0,102,204,0.9), 0 0 0 20px rgba(0,102,204,0.1); } }
+        
+        .chatbot-window { position: fixed; bottom: 100px; right: 20px; width: 420px; height: 650px; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); display: none; flex-direction: column; overflow: hidden; }
+        .chatbot-window.active { display: flex; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .chatbot-header { background: linear-gradient(135deg, #0066CC, #004C99); color: white; padding: 24px; }
+        .chatbot-messages { flex: 1; overflow-y: auto; padding: 24px; background: linear-gradient(to bottom, #f8f9fa, #ffffff); }
+        .chatbot-input { padding: 20px; border-top: 1px solid #e0e0e0; display: flex; gap: 12px; }
+        .chatbot-input input { flex: 1; padding: 14px 20px; border: 2px solid #e0e0e0; border-radius: 28px; outline: none; }
+        .chatbot-input button { padding: 14px 20px; background: #0066CC; color: white; border: none; border-radius: 28px; cursor: pointer; }
+        
+        .message { margin-bottom: 20px; display: flex; gap: 12px; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .message.bot { flex-direction: row; }
+        .message.user { flex-direction: row-reverse; }
+        .message-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .message.bot .message-avatar { background: linear-gradient(135deg, #0066CC, #00A86B); color: white; }
+        .message.user .message-avatar { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .message-content { max-width: 75%; padding: 14px 18px; border-radius: 18px; font-size: 15px; }
+        .message.bot .message-content { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .message.user .message-content { background: linear-gradient(135deg, #0066CC, #004C99); color: white; }
+        
+        @media (max-width: 768px) {
+            .chatbot-window { width: calc(100vw - 40px); height: calc(100vh - 140px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Bar -->
+    <div class="bg-gray-900 text-white py-2 text-sm fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <a href="tel:+917738895976" class="hover:text-blue-400"><i class="fas fa-phone mr-2"></i>+91 773 889 5976</a>
+                <span class="hidden md:inline">Shop No-1&2, Navi Mumbai Panvel-410206</span>
+            </div>
+            <div class="flex space-x-3">
+                <a href="#" class="hover:text-blue-400"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-blue-400"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-blue-400"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="hover:text-blue-400"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-8 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <img src="https://www.ribosomesdiagnostics.com/assets/images/logo.png" alt="Ribosomes" class="h-12">
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" onclick="showPage('home')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#" onclick="showPage('about')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">About</a>
+                    <div class="relative group">
+                        <a href="#" onclick="showPage('products')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Products <i class="fas fa-chevron-down text-xs"></i></a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" onclick="showPage('hematology')" class="block px-4 py-2 hover:bg-gray-100">Hematology</a>
+                            <a href="#" onclick="showPage('biochemistry')" class="block px-4 py-2 hover:bg-gray-100">Biochemistry</a>
+                            <a href="#" onclick="showPage('clia')" class="block px-4 py-2 hover:bg-gray-100">CLIA Systems</a>
+                            <a href="#" onclick="showPage('other')" class="block px-4 py-2 hover:bg-gray-100">Other Products</a>
+                        </div>
+                    </div>
+                    <a href="#" onclick="showPage('services')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Services</a>
+                    <a href="#" onclick="showPage('gallery')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Gallery</a>
+                    <a href="#" onclick="showPage('testimonials')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Testimonials</a>
+                    <a href="#" onclick="showPage('faq')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">FAQ</a>
+                    <a href="#" onclick="showPage('contact')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <section id="home" class="page-section active">
+        <div class="relative h-screen">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-700/90" style="background-image: url('https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1920'); background-size: cover; background-position: center; background-blend-mode: overlay;"></div>
+            <div class="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
+                <div class="text-white max-w-4xl mb-12">
+                    <div class="inline-block px-6 py-3 bg-green-500 rounded-full text-sm font-bold mb-6 animate-bounce">
+                        <i class="fas fa-robot mr-2"></i>AI-Powered Diagnostic Solutions
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6">Advanced Diagnostic Equipment</h1>
+                    <p class="text-xl md:text-2xl mb-8 opacity-90">Complete Solutions for Modern Laboratories</p>
+                </div>
+                
+                <div class="flex gap-4 mb-12">
+                    <button onclick="showPage('products')" class="bg-white text-blue-600 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition text-lg shadow-lg">
+                        <i class="fas fa-microscope mr-2"></i>View Products
+                    </button>
+                    <button onclick="openChatbot()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-full font-bold hover:from-green-600 hover:to-green-700 transition text-lg shadow-lg">
+                        <i class="fas fa-robot mr-2"></i>Ask AI
+                    </button>
+                </div>
+                
+                <div class="flex gap-8 text-white">
+                    <div><div class="text-4xl font-bold">15+</div><div class="text-sm opacity-90">Products</div></div>
+                    <div><div class="text-4xl font-bold">500+</div><div class="text-sm opacity-90">Clients</div></div>
+                    <div><div class="text-4xl font-bold">24/7</div><div class="text-sm opacity-90">AI Support</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Categories -->
+        <div class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-12">Product Categories</h2>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div onclick="showPage('hematology')" class="bg-gradient-to-br from-blue-500 to-blue-600 p-8 rounded-2xl text-white cursor-pointer hover:scale-105 transition">
+                        <i class="fas fa-vial text-5xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Hematology</h3>
+                        <p class="opacity-90">6 Products</p>
+                    </div>
+                    <div onclick="showPage('biochemistry')" class="bg-gradient-to-br from-green-500 to-green-600 p-8 rounded-2xl text-white cursor-pointer hover:scale-105 transition">
+                        <i class="fas fa-flask text-5xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Biochemistry</h3>
+                        <p class="opacity-90">5 Products</p>
+                    </div>
+                    <div onclick="showPage('clia')" class="bg-gradient-to-br from-purple-500 to-purple-600 p-8 rounded-2xl text-white cursor-pointer hover:scale-105 transition">
+                        <i class="fas fa-microscope text-5xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">CLIA</h3>
+                        <p class="opacity-90">3 Products</p>
+                    </div>
+                    <div onclick="showPage('other')" class="bg-gradient-to-br from-orange-500 to-orange-600 p-8 rounded-2xl text-white cursor-pointer hover:scale-105 transition">
+                        <i class="fas fa-heartbeat text-5xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Others</h3>
+                        <p class="opacity-90">ELISA, Coagulation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT PAGE -->
+    <section id="about" class="page-section">
+        <div class="container mx-auto px-4 py-20">
+            <h1 class="text-5xl font-bold text-center mb-12">About Ribosomes Diagnostics</h1>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Our Story</h2>
+                    <p class="text-lg text-gray-600 mb-4">Established on 21st February 2020 in Panvel, Maharashtra, Ribosomes Diagnostics has emerged as one of the most trusted and reputed marketers & distributors of diagnostic products in India.</p>
+                    <p class="text-lg text-gray-600 mb-4">We specialize in providing cutting-edge diagnostic equipment including Hematology Analyzers, Biochemistry Analyzers, CLIA Systems, ELISA Readers, and Coagulation Analyzers.</p>
+                    <p class="text-lg text-gray-600">Our commitment to quality, innovation, and customer satisfaction has made us a preferred partner for healthcare facilities across the nation.</p>
+                </div>
+                <div>
+                    <img src="https://www.ribosomesdiagnostics.com/assets/images/banner/hm3-single-slider-img-2.png" alt="About Us" class="rounded-2xl shadow-2xl">
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-20">
+                <div class="bg-blue-50 p-8 rounded-xl text-center">
+                    <i class="fas fa-bullseye text-5xl text-blue-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
+                    <p class="text-gray-600">To provide world-class diagnostic solutions that enhance healthcare delivery across India.</p>
+                </div>
+                <div class="bg-green-50 p-8 rounded-xl text-center">
+                    <i class="fas fa-eye text-5xl text-green-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">Our Vision</h3>
+                    <p class="text-gray-600">To be the leading distributor of diagnostic equipment, known for innovation and reliability.</p>
+                </div>
+                <div class="bg-purple-50 p-8 rounded-xl text-center">
+                    <i class="fas fa-heart text-5xl text-purple-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">Our Values</h3>
+                    <p class="text-gray-600">Quality, Integrity, Innovation, Customer Focus, and Excellence in everything we do.</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-12 rounded-3xl">
+                <h2 class="text-3xl font-bold mb-8 text-center">Our Partners</h2>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Agappe Diagnostics</h3>
+                        <p class="opacity-90">Leading manufacturer of diagnostic equipment</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Mindray</h3>
+                        <p class="opacity-90">Global medical technology company</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Nihon Kohden</h3>
+                        <p class="opacity-90">Japanese medical electronics manufacturer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS OVERVIEW -->
+    <section id="products" class="page-section">
+        <div class="container mx-auto px-4 py-20">
+            <h1 class="text-5xl font-bold text-center mb-4">Our Products</h1>
+            <p class="text-xl text-center text-gray-600 mb-12">Comprehensive diagnostic solutions for modern laboratories</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Sample products - will be expanded -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <img src="https://www.ribosomesdiagnostics.com/assets/product/mispa-nano-plus.jpg" alt="Mispa Nano Plus" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <span class="text-sm text-blue-600 font-semibold">BIOCHEMISTRY</span>
+                        <h3 class="text-2xl font-bold my-2">Mispa Nano Plus</h3>
+                        <p class="text-gray-600 mb-4">Fully automated biochemistry analyzer</p>
+                        <button onclick="askAI('Tell me about Mispa Nano Plus')" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                            <i class="fas fa-robot mr-2"></i>Ask AI
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- More products will be added here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES PAGE -->
+    <section id="services" class="page-section">
+        <div class="container mx-auto px-4 py-20">
+            <h1 class="text-5xl font-bold text-center mb-12">Our Services</h1>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <i class="fas fa-tools text-5xl text-blue-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">Installation</h3>
+                    <p class="text-gray-600">Professional installation by certified technicians ensuring optimal performance.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <i class="fas fa-graduation-cap text-5xl text-green-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">Training</h3>
+                    <p class="text-gray-600">Comprehensive training programs for your staff on equipment operation and maintenance.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <i class="fas fa-wrench text-5xl text-purple-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">Maintenance</h3>
+                    <p class="text-gray-600">24/7 support and regular maintenance to ensure uninterrupted operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT PAGE -->
+    <section id="contact" class="page-section">
+        <div class="container mx-auto px-4 py-20">
+            <h1 class="text-5xl font-bold text-center mb-12">Contact Us</h1>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <div class="bg-gray-50 p-8 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-6">Send Message</h3>
+                        <form class="space-y-4">
+                            <input type="text" placeholder="Name" class="w-full px-4 py-3 border rounded-lg" required>
+                            <input type="email" placeholder="Email" class="w-full px-4 py-3 border rounded-lg" required>
+                            <input type="tel" placeholder="Phone" class="w-full px-4 py-3 border rounded-lg" required>
+                            <textarea placeholder="Message" rows="4" class="w-full px-4 py-3 border rounded-lg" required></textarea>
+                            <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Send</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <i class="fas fa-map-marker-alt text-3xl text-blue-600 mb-2"></i>
+                        <h4 class="font-bold text-lg mb-2">Address</h4>
+                        <p class="text-gray-600">Shop No-1&2, Navi Mumbai Panvel-410206</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <i class="fas fa-phone text-3xl text-blue-600 mb-2"></i>
+                        <h4 class="font-bold text-lg mb-2">Phone</h4>
+                        <a href="tel:+917738895976" class="text-gray-600">+91 773 889 5976</a>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl text-white">
+                        <i class="fas fa-robot text-3xl mb-2"></i>
+                        <h4 class="font-bold text-lg mb-2">AI Assistant</h4>
+                        <p class="mb-3">24/7 instant support</p>
+                        <button onclick="openChatbot()" class="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-gray-100">Chat Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chatbot -->
+    <div class="ai-chatbot">
+        <button class="chatbot-button" onclick="toggleChatbot()">
+            <i class="fas fa-robot"></i>
+        </button>
+        
+        <div id="chatbotWindow" class="chatbot-window">
+            <div class="chatbot-header">
+                <div>
+                    <div class="font-bold text-xl">AI Assistant</div>
+                    <div class="text-sm opacity-90">Always here to help</div>
+                </div>
+                <button onclick="toggleChatbot()" class="text-white hover:text-gray-200 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="chatMessages" class="chatbot-messages">
+                <div class="message bot">
+                    <div class="message-avatar"><i class="fas fa-robot"></i></div>
+                    <div class="message-content">
+                        👋 Hello! I can help you with product information, pricing, and technical support. What would you like to know?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        
+        function toggleChatbot() {
+            document.getElementById('chatbotWindow').classList.toggle('active');
+        }
+        
+        function openChatbot() {
+            document.getElementById('chatbotWindow').classList.add('active');
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            setTimeout(() => {
+                const response = getAIResponse(message);
+                addMessage(response, 'bot');
+            }, 1000);
+        }
+        
+        function getAIResponse(message) {
+            const msg = message.toLowerCase();
+            if (msg.includes('mispa nano')) return 'Mispa Nano Plus is our fully automated biochemistry analyzer with random access, high throughput, and AI-powered quality control. Perfect for medium to large labs!';
+            if (msg.includes('bc5140')) return 'BC5140 is our advanced 5-Part Hematology Analyzer with 25 parameters, Flow Cytometer technology, and AI pattern recognition. Manufactured by Mindray.';
+            if (msg.includes('price') || msg.includes('cost')) return 'For detailed pricing, please call us at +91 773 889 5976 or fill the contact form. Our team will provide competitive quotes!';
+            return 'I can help you with product information, specifications, pricing, and technical support. What specific product are you interested in?';
+        }
+        
+        function addMessage(text, type) {
+            const messages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `
+                <div class="message-avatar"><i class="fas fa-${type === 'bot' ? 'robot' : 'user'}"></i></div>
+                <div class="message-content">${text}</div>
+            `;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+        
+        function askAI(question) {
+            document.getElementById('chatInput').value = question;
+            openChatbot();
+            setTimeout(() => sendMessage(), 300);
+        }
+    </script>
+</body>
+</html>
